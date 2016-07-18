@@ -182,7 +182,8 @@ for k = config.startAt,config.endAt do
 
   -- save top masks?
   if config.save then
-    local res = maskApi.drawMasks(input, masks, 10)
+    local res = input:clone()
+    maskApi.drawMasks(res, masks, 10)
     image.save(string.format('%s/res/%d.jpg',savedir,k),res)
   end
 

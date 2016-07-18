@@ -84,8 +84,9 @@ infer:forward(img)
 local masks,_ = infer:getTopProps(.2,h,w)
 
 -- save result
-local res = maskApi.drawMasks(img, masks, 10)
-image.save(string.format('data/res.jpg',config.model),res)
+local res = img:clone()
+maskApi.drawMasks(res, masks, 10)
+image.save(string.format('./res.jpg',config.model),res)
 
 print('| done')
 collectgarbage()
