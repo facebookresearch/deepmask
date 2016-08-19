@@ -1,3 +1,4 @@
 .DS_Store
 pretrained/
 data/
+exps/

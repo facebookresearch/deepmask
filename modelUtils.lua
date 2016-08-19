@@ -24,8 +24,7 @@ if not nn.SpatialConstDiagonal then
   end
 
   function module:reset()
-    self.a:fill(1)
-    self.b:zero()
+    self.a:fill(1); self.b:zero()
   end
 
   function module:updateOutput(input)
@@ -51,38 +50,15 @@ if not nn.SpatialConstDiagonal then
 end
 
 --------------------------------------------------------------------------------
--- function: goes over a net and recursively replaces modules
--- using callback function
-local function replace(self, callback)
-  local out = callback(self)
-  if self.modules then
-    for i=#self.modules,1,-1 do
-      local m = self.modules[i]
-      local mm = replace(m, callback)
-      if mm then self.modules[i] = mm else self:remove(i) end
-    end
-  end
-  return out
-end
-
---------------------------------------------------------------------------------
 -- function: replace BN layer to SpatialConstDiagonal
 function utils.BNtoFixed(net, ip)
-  return replace(
-    net,
-    function(x)
+  return net:replace(function(x)
     if torch.typename(x):find'SpatialBatchNormalization' then
       local no = x.running_mean:numel()
       local y = nn.SpatialConstDiagonal(no, ip):type(x._type)
-      if x.running_var then
-        x.running_std = x.running_var:pow(-0.5)
-      end
-      y.a:copy(x.running_std)
-      y.b:add(-1,x.running_mean):cmul(x.running_std)
-      if x.affine then
-        y.a:cmul(x.weight)
-        y.b:cmul(x.weight):add(x.bias)
-      end
+      if x.running_var then x.running_std = x.running_var:pow(-0.5) end
+      y.a:copy(x.running_std); y.b:add(-1,x.running_mean):cmul(x.running_std)
+      if x.affine then y.a:cmul(x.weight); y.b:cmul(x.weight):add(x.bias) end
       return y
     else
       return x
@@ -94,21 +70,19 @@ end
 --------------------------------------------------------------------------------
 -- function: linear2convTrunk
 function utils.linear2convTrunk(net,fSz)
-  return replace(
-  net,
-  function(x)
+  return net:replace(function(x)
     if torch.typename(x):find('Linear') then
       local nInp,nOut = x.weight:size(2)/(fSz*fSz),x.weight:size(1)
       local w = torch.reshape(x.weight,nOut,nInp,fSz,fSz)
       local y = cudnn.SpatialConvolution(nInp,nOut,fSz,fSz,1,1)
-      y.weight:copy(w)
-      y.gradWeight:copy(w)
-      y.bias:copy(x.bias)
+      y.weight:copy(w); y.gradWeight:copy(w); y.bias:copy(x.bias)
       return y
     elseif torch.typename(x):find('Threshold') then
       return cudnn.ReLU()
-    elseif not torch.typename(x):find('View') and
-      not torch.typename(x):find('SpatialZeroPadding') then
+    elseif torch.typename(x):find('View') or
+       torch.typename(x):find('SpatialZeroPadding') then
+      return nn.Identity()
+    else
       return x
     end
   end
@@ -118,16 +92,12 @@ end
 --------------------------------------------------------------------------------
 -- function: linear2convHeads
 function utils.linear2convHead(net)
-  return replace(
-  net,
-  function(x)
+  return net:replace(function(x)
     if torch.typename(x):find('Linear') then
       local nInp,nOut = x.weight:size(2),x.weight:size(1)
       local w = torch.reshape(x.weight,nOut,nInp,1,1)
       local y = cudnn.SpatialConvolution(nInp,nOut,1,1,1,1)
-      y.weight:copy(w)
-      y.gradWeight:copy(w)
-      y.bias:copy(x.bias)
+      y.weight:copy(w); y.gradWeight:copy(w); y.bias:copy(x.bias)
       return y
     elseif torch.typename(x):find('Threshold') then
       return cudnn.ReLU()

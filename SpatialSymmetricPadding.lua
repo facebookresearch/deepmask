@@ -6,11 +6,15 @@ of patent rights can be found in the PATENTS file in the same directory.
 
 SpatialSymmetricPadding module
 
-The forward(A) pads input array A with mirror reflections of itself
+The forward(A) pads input tensor A with mirror reflections of itself
 It is the same function as Matlab padarray(A, padsize, 'symmetric' )
-The updateGradInput(input, gradOutput) is inherited from nn.SpatialZeroPadding
+The padding is of the form: cba[abcd...]
+While nn.SpatialReflectionPadding does: dcb[abcd...]
+And nn.SpatialReplicationPadding does: aaa[abcd...]
+(where [abcd...] is a tensor)
+The updateGradInput(input, gradOutput) is inherited from nn.SpatialZeroPadding,
 where the padded region is treated as constant and
-the gradients would not be accumulated in the backward pass
+the gradients are accumulated in the backward pass
 ------------------------------------------------------------------------------]]
 
 local SpatialSymmetricPadding, parent =
