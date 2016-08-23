@@ -1,6 +1,8 @@
 # Introduction
 This repository contains a [Torch](http://torch.ch) implementation for both the [DeepMask](http://arxiv.org/abs/1506.06204) and [SharpMask](http://arxiv.org/abs/1603.08695) object proposal algorithms.
 
+![teaser](https://raw.githubusercontent.com/facebookresearch/deepmask/master/data/teaser.png)
+
 [DeepMask](http://arxiv.org/abs/1506.06204) is trained with two objectives: given an image patch, one branch of the model outputs a class-agnostic segmentation mask, while the other branch outputs how likely the patch is to contain an object. At test time, DeepMask is applied densely to an image and generates a set of object masks, each with a corresponding objectness score. These masks densely cover the objects in an image and can be used as a first step for object detection and other tasks in computer vision.
 
 [SharpMask](http://arxiv.org/abs/1603.08695) is an extension of DeepMask which generates higher-fidelity masks using an additional top-down refinement step. The idea is to first generate a coarse mask encoding in a feedforward pass, then refine this mask encoding in a top-down pass using features at successively lower layers. This result in masks that better adhere to object boundaries.
