@@ -25,4 +25,4 @@ clear and has sufficient instructions to be able to reproduce the issue.
 
 ## License
 By contributing to deepmask, you agree that your contributions will be licensed
-under its BSD license.
+under its [BSD license](https://github.com/facebookresearch/deepmask/blob/master/LICENSE).
