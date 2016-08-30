@@ -10,62 +10,14 @@ Utility functions for models
 local utils = {}
 
 --------------------------------------------------------------------------------
--- SpatialConstDiagonal module
 -- all BN modules in ResNet to be transformed into SpatialConstDiagonal
+-- (with inn routines)
+local inn = require 'inn'
+local innutils = require 'inn.utils'
 if not nn.SpatialConstDiagonal then
-  local module, parent = torch.class('nn.SpatialConstDiagonal', 'nn.Module')
-
-  function module:__init(nOutputPlane, inplace)
-    parent.__init(self)
-    self.a = torch.Tensor(1,nOutputPlane,1,1)
-    self.b = torch.Tensor(1,nOutputPlane,1,1)
-    self.inplace = inplace
-    self:reset()
-  end
-
-  function module:reset()
-    self.a:fill(1); self.b:zero()
-  end
-
-  function module:updateOutput(input)
-    if self.inplace then
-      self.output:set(input)
-    else
-      self.output:resizeAs(input):copy(input)
-    end
-    self.output:cmul(self.a:expandAs(input))
-    self.output:add(self.b:expandAs(input))
-    return self.output
-  end
-
-  function module:updateGradInput(input, gradOutput)
-    if self.inplace then
-      self.gradInput:set(gradOutput)
-    else
-      self.gradInput:resizeAs(gradOutput):copy(gradOutput)
-    end
-    self.gradInput:cmul(self.a:expandAs(gradOutput))
-    return self.gradInput
-  end
+  torch.class('nn.SpatialConstDiagonal', 'inn.ConstAffine')
 end
-
---------------------------------------------------------------------------------
--- function: replace BN layer to SpatialConstDiagonal
-function utils.BNtoFixed(net, ip)
-  return net:replace(function(x)
-    if torch.typename(x):find'SpatialBatchNormalization' then
-      local no = x.running_mean:numel()
-      local y = nn.SpatialConstDiagonal(no, ip):type(x._type)
-      if x.running_var then x.running_std = x.running_var:pow(-0.5) end
-      y.a:copy(x.running_std); y.b:add(-1,x.running_mean):cmul(x.running_std)
-      if x.affine then y.a:cmul(x.weight); y.b:cmul(x.weight):add(x.bias) end
-      return y
-    else
-      return x
-    end
-  end
-  )
-end
+utils.BNtoFixed = innutils.BNtoFixed
 
 --------------------------------------------------------------------------------
 -- function: linear2convTrunk
