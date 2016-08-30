@@ -29,7 +29,7 @@ Note: the version of DeepMask implemented here is the updated version reported i
 # Requirements and Dependencies
 * MAC OS X or Linux
 * NVIDIA GPU with compute capability 3.5+
-* [Torch](http://torch.ch) with packages: [COCO API](https://github.com/pdollar/coco), [image](https://github.com/torch/image), [tds](https://github.com/torch/tds), [cjson](https://github.com/clementfarabet/lua---json), [nnx](https://github.com/clementfarabet/lua---nnx), [optim](https://github.com/torch/optim), [inn](https://github.com/szagoruyko/imagine-nn), [cutorch](https://github.com/torch/cutorch), [cunn](https://github.com/torch/cunn), [cudnn](https://github.com/soumith/cudnn.torch), [cudnn](https://github.com/soumith/cudnn.torch)
+* [Torch](http://torch.ch) with packages: [COCO API](https://github.com/pdollar/coco), [image](https://github.com/torch/image), [tds](https://github.com/torch/tds), [cjson](https://github.com/clementfarabet/lua---json), [nnx](https://github.com/clementfarabet/lua---nnx), [optim](https://github.com/torch/optim), [inn](https://github.com/szagoruyko/imagine-nn), [cutorch](https://github.com/torch/cutorch), [cunn](https://github.com/torch/cunn), [cudnn](https://github.com/soumith/cudnn.torch)
 
 # Quick Start
 To run pretrained DeepMask/SharpMask models to generate object proposals, follow these steps:
