@@ -197,7 +197,7 @@ end
 -- function: evaluate
 function SharpMask:evaluate()
   self.trunk:evaluate();self.scoreBranch:evaluate();self.maskBranchDM:evaluate()
-  parent.training(self)
+  parent.evaluate(self)
 end
 
 --------------------------------------------------------------------------------
