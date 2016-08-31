@@ -19,7 +19,7 @@ require 'cunn'
 require 'cudnn'
 local utils = paths.dofile('modelUtils.lua')
 
-local SharpMask, _ = torch.class('nn.SharpMask','nn.Container')
+local SharpMask, parent = torch.class('nn.SharpMask','nn.Container')
 
 --------------------------------------------------------------------------------
 -- function: init
