@@ -19,7 +19,7 @@ require 'cunn'
 require 'cudnn'
 local utils = paths.dofile('modelUtils.lua')
 
-local SharpMask, _ = torch.class('nn.SharpMask','nn.Container')
+local SharpMask, parent = torch.class('nn.SharpMask','nn.Container')
 
 --------------------------------------------------------------------------------
 -- function: init
@@ -37,6 +37,7 @@ function SharpMask:__init(config)
   self.scoreBranch = deepmask.scoreBranch
   self.maskBranchDM = deepmask.maskBranch
   self.fSz = deepmask.fSz
+  self.modules = {}
 
   -- create refinement modules
   self:createTopDownRefinement(config)
@@ -139,8 +140,10 @@ function SharpMask:createTopDownRefinement(config)
 
   local refs = {}
   refs[0] = self.netvs[0]
+  table.insert(self.modules,refs[#refs])
   for i = 1, #self.skpos do
     table.insert(refs,self:refinement(self.neths[i],self.netvs[i]))
+    table.insert(self.modules,refs[#refs])
   end
 
   local finalref = refs[#refs]
@@ -184,43 +187,17 @@ function SharpMask:backward(input,gradOutput)
 end
 
 --------------------------------------------------------------------------------
--- function: zeroGradParameters
-function SharpMask:zeroGradParameters()
-  for k,v in pairs(self.refs) do self.refs[k]:zeroGradParameters() end
-end
-
---------------------------------------------------------------------------------
--- function: updateParameters
-function SharpMask:updateParameters(lr)
-  for k,n in pairs(self.refs) do self.refs[k]:updateParameters(lr) end
-end
-
---------------------------------------------------------------------------------
 -- function: training
 function SharpMask:training()
   self.trunk:training();self.scoreBranch:training();self.maskBranchDM:training()
-  for k,n in pairs(self.refs) do self.refs[k]:training() end
+  parent.training(self)
 end
 
 --------------------------------------------------------------------------------
 -- function: evaluate
 function SharpMask:evaluate()
   self.trunk:evaluate();self.scoreBranch:evaluate();self.maskBranchDM:evaluate()
-  for k,n in pairs(self.refs) do self.refs[k]:evaluate() end
-end
-
---------------------------------------------------------------------------------
--- function: to cuda
-function SharpMask:cuda()
-  self.trunk:cuda();self.scoreBranch:cuda();self.maskBranchDM:cuda()
-  for k,n in pairs(self.refs) do self.refs[k]:cuda() end
-end
-
---------------------------------------------------------------------------------
--- function: to float
-function SharpMask:float()
-  self.trunk:float();self.scoreBranch:float();self.maskBranchDM:float()
-  for k,n in pairs(self.refs) do self.refs[k]:float() end
+  parent.evaluate(self)
 end
 
 --------------------------------------------------------------------------------
