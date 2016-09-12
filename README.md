@@ -82,7 +82,7 @@ To train your own DeepMask/SharpMask models, follow these steps:
 
 2. Download the Torch [ResNet-50](https://s3.amazonaws.com/deepmask/models/resnet-50.t7) model pretrained on ImageNet:
 
-   Linux
+   Linux:
    ```bash
    mkdir -p $DEEPMASK/pretrained; cd $DEEPMASK/pretrained
    wget https://s3.amazonaws.com/deepmask/models/resnet-50.t7
@@ -104,7 +104,7 @@ To train your own DeepMask/SharpMask models, follow these steps:
    wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
    ```
 
-   Linux:
+   Mac OS X:
    ```bash
    mkdir -p $DEEPMASK/data; cd $DEEPMASK/data
    curl http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip -o instances_train-val2014.zip
