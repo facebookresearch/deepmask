@@ -43,11 +43,20 @@ To run pretrained DeepMask/SharpMask models to generate object proposals, follow
 
 2. Download pre-trained DeepMask and SharpMask models:
 
+   Linux:
    ```bash
    mkdir -p $DEEPMASK/pretrained/deepmask; cd $DEEPMASK/pretrained/deepmask
    wget https://s3.amazonaws.com/deepmask/models/deepmask/model.t7
    mkdir -p $DEEPMASK/pretrained/sharpmask; cd $DEEPMASK/pretrained/sharpmask
    wget https://s3.amazonaws.com/deepmask/models/sharpmask/model.t7
+   ```
+
+   Mac OS X:
+   ```bash
+   mkdir -p $DEEPMASK/pretrained/deepmask; cd $DEEPMASK/pretrained/deepmask
+   curl https://s3.amazonaws.com/deepmask/models/deepmask/model.t7 -o model.t7
+   mkdir -p $DEEPMASK/pretrained/sharpmask; cd $DEEPMASK/pretrained/sharpmask
+   curl https://s3.amazonaws.com/deepmask/models/sharpmask/model.t7 -o model.t7
    ```
 
 3. Run `computeProposals.lua` with a given model and optional target image (specified via the `-img` option):
@@ -59,7 +68,6 @@ To run pretrained DeepMask/SharpMask models to generate object proposals, follow
    th computeProposals.lua $DEEPMASK/pretrained/sharpmask # run SharpMask
    th computeProposals.lua $DEEPMASK/pretrained/sharpmask -img /path/to/image.jpg
    ```
-
 
 # Training Your Own Model
 To train your own DeepMask/SharpMask models, follow these steps:
@@ -74,18 +82,34 @@ To train your own DeepMask/SharpMask models, follow these steps:
 
 2. Download the Torch [ResNet-50](https://s3.amazonaws.com/deepmask/models/resnet-50.t7) model pretrained on ImageNet:
 
+   Linux
    ```bash
    mkdir -p $DEEPMASK/pretrained; cd $DEEPMASK/pretrained
    wget https://s3.amazonaws.com/deepmask/models/resnet-50.t7
    ```
+   
+   Mac OS X:
+   ```bash
+   mkdir -p $DEEPMASK/pretrained; cd $DEEPMASK/pretrained
+   curl https://s3.amazonaws.com/deepmask/models/resnet-50.t7 -o resnet-50.t7
+   ```
 
 3. Download and extract the [COCO](http://mscoco.org/) images and annotations:
 
+   Linux:
    ```bash
    mkdir -p $DEEPMASK/data; cd $DEEPMASK/data
    wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
    wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
    wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
+   ```
+
+   Linux:
+   ```bash
+   mkdir -p $DEEPMASK/data; cd $DEEPMASK/data
+   curl http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip -o instances_train-val2014.zip
+   curl http://msvocds.blob.core.windows.net/coco2014/train2014.zip -o train2014.zip
+   curl http://msvocds.blob.core.windows.net/coco2014/val2014.zip -o val2014.zip
    ```
 
 ## Training
