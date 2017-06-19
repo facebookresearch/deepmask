@@ -165,8 +165,8 @@ function Infer:getTopScores()
       end
     end
     local temp=sortedIds[pos[scale]][scale]
-    local x=math.floor(temp/self.score[scale]:size(2))
-    local y=temp%self.score[scale]:size(2)+1
+    local x=math.floor((temp-1)/self.score[scale]:size(2))+1 -- row
+    local y=(temp-1)%self.score[scale]:size(2)+1 -- column
     x,y=math.max(1,x),math.max(1,y)
 
     pos[scale]=pos[scale]+1
