@@ -89,8 +89,8 @@ maskApi.drawMasks(res, masks, 10)
 image.save(string.format('./res.jpg',config.model),res)
 
 local mask1 = torch.Tensor(d1,h,w):zero()
---maskApi.drawMasks(mask1,masks,10)
---image.save(string.format('./mask1.jpg',config.model),mask1)
+maskApi.drawMasks(mask1,masks,10)
+image.save(string.format('./mask1.jpg',config.model),mask1)
 
 print('| done')
 collectgarbage()
