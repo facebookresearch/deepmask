@@ -75,7 +75,7 @@ print('| start')
 
 -- load image
 local img = image.load(config.img)
-local h,w = img:size(2),img:size(3)
+local d1,h,w = img:size(1),img:size(2),img:size(3)
 
 -- forward all scales
 infer:forward(img)
@@ -89,8 +89,8 @@ maskApi.drawMasks(res, masks, 10)
 image.save(string.format('./res.jpg',config.model),res)
 
 local mask1 = torch.Tensor(d1,h,w):zero()
-maskApi.drawMasks(mask1,masks,10)
-image.save(string.format('./mask1.jpg',config.model),mask1)
+--maskApi.drawMasks(mask1,masks,10)
+--image.save(string.format('./mask1.jpg',config.model),mask1)
 
 print('| done')
 collectgarbage()
