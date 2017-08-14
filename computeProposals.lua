@@ -3,7 +3,6 @@ Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
 This source code is licensed under the BSD-style license found in the
 LICENSE file in the root directory of this source tree. An additional grant
 of patent rights can be found in the PATENTS file in the same directory.
-
 Run full scene inference in sample image
 ------------------------------------------------------------------------------]]
 
@@ -20,6 +19,8 @@ cmd:text()
 cmd:argument('-model', 'path to model to load')
 cmd:text('Options:')
 cmd:option('-img','data/testImage.jpg' ,'path/to/test/image')
+cmd:option('-out', 'out.jpg', 'path/to/result')
+cmd:option('-mask', 'mask.jpg', 'path/to/mask')
 cmd:option('-gpu', 1, 'gpu device')
 cmd:option('-np', 5,'number of proposals to save in test')
 cmd:option('-si', -2.5, 'initial scale')
@@ -75,7 +76,7 @@ print('| start')
 
 -- load image
 local img = image.load(config.img)
-local h,w = img:size(2),img:size(3)
+local d1,h,w = img:size(1),img:size(2),img:size(3)
 
 -- forward all scales
 infer:forward(img)
@@ -86,7 +87,28 @@ local masks,_ = infer:getTopProps(.2,h,w)
 -- save result
 local res = img:clone()
 maskApi.drawMasks(res, masks, 10)
-image.save(string.format('./res.jpg',config.model),res)
+image.save(string.format(config.out,config.model),res)
+
+function binary_mask (tensor)
+   local d = tensor:size(1)
+   local h = tensor:size(2)
+   local w = tensor:size(3)
+   for ii = 1,d do
+      for i=1,h do
+          for j=1,w do
+              if tensor[ii][i][j] > 0 then
+                 tensor[ii][i][j] = 1
+             end
+         end
+      end
+   end
+  return tensor
+end
+
+local mask1 = torch.Tensor(d1,h,w):zero()
+maskApi.drawMasks(mask1,masks,10)
+mask1 = binary_mask(mask1)
+image.save(string.format(config.out,config.model),mask1)
 
 print('| done')
 collectgarbage()
