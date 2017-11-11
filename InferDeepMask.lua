@@ -187,10 +187,11 @@ function Infer:getTopMasks(thr,h,w)
   local masks,topScores,np = self.mask,self.topScores,self.np
   topMasks:resize(np,h,w):zero()
   imgMask:resize(h,w)
-  local imgMaskPtr = imgMask:data()
+  imgMask:zero()
 
   for i = 1,np do
-    imgMask:zero()
+    local imgMask_copy = imgMask:clone()
+    local imgMaskPtr = imgMask_copy:data()
     local scale,x,y=topScores[i][2], topScores[i][3], topScores[i][4]
     local s=self.scales[scale]
     local sz = math.floor(self.iSz/s)
@@ -212,7 +213,7 @@ function Infer:getTopMasks(thr,h,w)
         end
       end
     end
-    topMasks:narrow(1,i,1):copy(imgMask)
+    topMasks:narrow(1,i,1):copy(imgMask_copy)
   end
 
   return topMasks
