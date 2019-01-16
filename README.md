@@ -45,9 +45,9 @@ To run pretrained DeepMask/SharpMask models to generate object proposals, follow
 
    ```bash
    mkdir -p $DEEPMASK/pretrained/deepmask; cd $DEEPMASK/pretrained/deepmask
-   wget https://s3.amazonaws.com/deepmask/models/deepmask/model.t7
+   wget https://dl.fbaipublicfiles.com/deepmask/models/deepmask/model.t7
    mkdir -p $DEEPMASK/pretrained/sharpmask; cd $DEEPMASK/pretrained/sharpmask
-   wget https://s3.amazonaws.com/deepmask/models/sharpmask/model.t7
+   wget https://dl.fbaipublicfiles.com/deepmask/models/sharpmask/model.t7
    ```
 
 3. Run `computeProposals.lua` with a given model and optional target image (specified via the `-img` option):
@@ -72,11 +72,11 @@ To train your own DeepMask/SharpMask models, follow these steps:
    git clone git@github.com:facebookresearch/deepmask.git $DEEPMASK
    ```
 
-2. Download the Torch [ResNet-50](https://s3.amazonaws.com/deepmask/models/resnet-50.t7) model pretrained on ImageNet:
+2. Download the Torch [ResNet-50](https://dl.fbaipublicfiles.com/deepmask/models/resnet-50.t7) model pretrained on ImageNet:
 
    ```bash
    mkdir -p $DEEPMASK/pretrained; cd $DEEPMASK/pretrained
-   wget https://s3.amazonaws.com/deepmask/models/resnet-50.t7
+   wget https://dl.fbaipublicfiles.com/deepmask/models/resnet-50.t7
    ```
 
 3. Download and extract the [COCO](http://mscoco.org/) images and annotations:
@@ -124,13 +124,13 @@ There are two ways to evaluate a model on the COCO dataset.
 You can download pre-computed proposals (1000 per image) on the COCO and PASCAL VOC datasets, for both segmentation and bounding box proposals. We use the COCO JSON [format](http://mscoco.org/dataset/#format) for the proposals. The proposals are divided into chunks of 500 images each (that is, each JSON contains 1000 proposals per image for 500 images). All proposals correspond to the "zoom" setting in the paper (DeepMaskZoom and SharpMaskZoom) which tend to be most effective for object detection.
 
 ## DeepMask
-* COCO Boxes: [[train](https://s3.amazonaws.com/deepmask/boxes/deepmask-coco-train-bbox.tar.gz) | [val](https://s3.amazonaws.com/deepmask/boxes/deepmask-coco-val-bbox.tar.gz) | [test-dev](https://s3.amazonaws.com/deepmask/boxes/deepmask-coco-test-dev-bbox.tar.gz) | [test-full](https://s3.amazonaws.com/deepmask/boxes/deepmask-coco-test-full-bbox.tar.gz)]
-* COCO Segments: [[train](https://s3.amazonaws.com/deepmask/segms/deepmask-coco-train.tar.gz) | [val](https://s3.amazonaws.com/deepmask/segms/deepmask-coco-val.tar.gz) | [test-dev](https://s3.amazonaws.com/deepmask/segms/deepmask-coco-test-dev.tar.gz) | [test-full](https://s3.amazonaws.com/deepmask/segms/deepmask-coco-test-full.tar.gz)]
-* PASCAL Boxes: [[train+val+test-2007](https://s3.amazonaws.com/deepmask/boxes/deepmask-pascal07-bbox.tar.gz) | [train+val+test-2012](https://s3.amazonaws.com/deepmask/boxes/deepmask-pascal12-bbox.tar.gz)]
-* PASCAL Segments: [[train+val+test-2007](https://s3.amazonaws.com/deepmask/segms/deepmask-pascal07.tar.gz) | [train+val+test-2012](https://s3.amazonaws.com/deepmask/segms/deepmask-pascal12.tar.gz)]
+* COCO Boxes: [[train](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-coco-train-bbox.tar.gz) | [val](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-coco-val-bbox.tar.gz) | [test-dev](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-coco-test-dev-bbox.tar.gz) | [test-full](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-coco-test-full-bbox.tar.gz)]
+* COCO Segments: [[train](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-coco-train.tar.gz) | [val](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-coco-val.tar.gz) | [test-dev](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-coco-test-dev.tar.gz) | [test-full](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-coco-test-full.tar.gz)]
+* PASCAL Boxes: [[train+val+test-2007](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-pascal07-bbox.tar.gz) | [train+val+test-2012](https://dl.fbaipublicfiles.com/deepmask/boxes/deepmask-pascal12-bbox.tar.gz)]
+* PASCAL Segments: [[train+val+test-2007](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-pascal07.tar.gz) | [train+val+test-2012](https://dl.fbaipublicfiles.com/deepmask/segms/deepmask-pascal12.tar.gz)]
 
 ## SharpMask
-* COCO Boxes: [[train](https://s3.amazonaws.com/deepmask/boxes/sharpmask-coco-train-bbox.tar.gz) | [val](https://s3.amazonaws.com/deepmask/boxes/sharpmask-coco-val-bbox.tar.gz) | [test-dev](https://s3.amazonaws.com/deepmask/boxes/sharpmask-coco-test-dev-bbox.tar.gz) | [test-full](https://s3.amazonaws.com/deepmask/boxes/sharpmask-coco-test-full-bbox.tar.gz)]
-* COCO Segments: [[train](https://s3.amazonaws.com/deepmask/segms/sharpmask-coco-train.tar.gz) | [val](https://s3.amazonaws.com/deepmask/segms/sharpmask-coco-val.tar.gz) | [test-dev](https://s3.amazonaws.com/deepmask/segms/sharpmask-coco-test-dev.tar.gz) | [test-full](https://s3.amazonaws.com/deepmask/segms/sharpmask-coco-test-full.tar.gz)]
-* PASCAL Boxes: [[train+val+test-2007](https://s3.amazonaws.com/deepmask/boxes/sharpmask-pascal07-bbox.tar.gz) | [train+val+test-2012](https://s3.amazonaws.com/deepmask/boxes/sharpmask-pascal12-bbox.tar.gz)]
-* PASCAL Segments: [[train+val+test-2007](https://s3.amazonaws.com/deepmask/segms/sharpmask-pascal07.tar.gz) | [train+val+test-2012](https://s3.amazonaws.com/deepmask/segms/sharpmask-pascal12.tar.gz)]
+* COCO Boxes: [[train](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-coco-train-bbox.tar.gz) | [val](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-coco-val-bbox.tar.gz) | [test-dev](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-coco-test-dev-bbox.tar.gz) | [test-full](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-coco-test-full-bbox.tar.gz)]
+* COCO Segments: [[train](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-coco-train.tar.gz) | [val](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-coco-val.tar.gz) | [test-dev](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-coco-test-dev.tar.gz) | [test-full](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-coco-test-full.tar.gz)]
+* PASCAL Boxes: [[train+val+test-2007](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-pascal07-bbox.tar.gz) | [train+val+test-2012](https://dl.fbaipublicfiles.com/deepmask/boxes/sharpmask-pascal12-bbox.tar.gz)]
+* PASCAL Segments: [[train+val+test-2007](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-pascal07.tar.gz) | [train+val+test-2012](https://dl.fbaipublicfiles.com/deepmask/segms/sharpmask-pascal12.tar.gz)]
